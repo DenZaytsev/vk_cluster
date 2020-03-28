@@ -3,14 +3,13 @@ import requests
 import json
 
 
-def write_csv_from_json(response: json) -> None:
+def write_csv(list_groups: list) -> None:
     """"""
-    list_group = response['response']['items']
+    pass
 
 
-def main():
-    key_word = 'a'
-
+def get_a_list_of_groups(key_word: str) -> list:
+    """по ключевому слову возвращает список групп"""
     params = {
         'q': key_word,
         'access_token': TOKEN,
@@ -21,9 +20,15 @@ def main():
         'offset': 0
     }
 
-    re = requests.get(f'https://api.vk.com/method/groups.search', params)
+    response = requests.get(f'https://api.vk.com/method/groups.search', params)
+    print(response.status_code)
+    list_groups = response.json()['response']['items']
 
-    write_csv_from_json(re.json())
+    return list_groups
+
+
+def main():
+    get_a_list_of_groups("sdf")
 
 
 if __name__ == "__main__":
