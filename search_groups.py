@@ -1,11 +1,12 @@
 from access_token import TOKEN
 import requests
-import json
 
 
 def write_csv(list_groups: list) -> None:
-    """"""
-    pass
+    with open('groups_id.csv', 'a') as file:
+        for group in list_groups:
+            if not group['is_closed']:
+                file.write(f"{group['id']},{group['name']}\n")
 
 
 def get_a_list_of_groups(key_word: str) -> list:
@@ -15,20 +16,22 @@ def get_a_list_of_groups(key_word: str) -> list:
         'access_token': TOKEN,
         'v': 5.103,
         'type': 'group',
-        'sort': 3,
+        'sort': 0,
         "count": 1000,
         'offset': 0
     }
-
     response = requests.get(f'https://api.vk.com/method/groups.search', params)
     print(response.status_code)
     list_groups = response.json()['response']['items']
-
     return list_groups
 
 
 def main():
-    get_a_list_of_groups("sdf")
+    key_words = [
+        'a'
+    ]
+    for key_word in key_words:
+        write_csv(get_a_list_of_groups(key_word))
 
 
 if __name__ == "__main__":
