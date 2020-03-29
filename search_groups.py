@@ -1,12 +1,14 @@
 from access_token import TOKEN
 import requests
+import regex as re
 
 
 def write_csv(list_groups: list) -> None:
-    with open('groups_id.csv', 'a') as file:
+    with open('groups_id.csv', 'a', encoding='utf-8') as file:
         for group in list_groups:
             if not group['is_closed']:
-                file.write(f"{group['id']},{group['name']}\n")
+                clean_name = re.compile('[^a-zA-Zа-яА-Я ]').sub('', group['name'])
+                file.write(f"{group['id']};{clean_name}\n")
 
 
 def get_a_list_of_groups(key_word: str) -> list:
@@ -16,7 +18,7 @@ def get_a_list_of_groups(key_word: str) -> list:
         'access_token': TOKEN,
         'v': 5.103,
         'type': 'group',
-        'sort': 0,
+        'sort': 3,
         "count": 1000,
         'offset': 0
     }
@@ -28,7 +30,9 @@ def get_a_list_of_groups(key_word: str) -> list:
 
 def main():
     key_words = [
-        'a'
+        'гадание',
+        'приворот',
+        'ведьма'
     ]
     for key_word in key_words:
         write_csv(get_a_list_of_groups(key_word))
