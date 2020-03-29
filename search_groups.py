@@ -1,4 +1,4 @@
-from access_token import TOKEN
+from .access_token import TOKEN
 import requests
 import regex as re
 
@@ -18,7 +18,7 @@ def get_a_list_of_groups(key_word: str) -> list:
         'access_token': TOKEN,
         'v': 5.103,
         'type': 'group',
-        'sort': 3,
+        'sort': 0,
         "count": 1000,
         'offset': 0
     }
@@ -30,9 +30,7 @@ def get_a_list_of_groups(key_word: str) -> list:
 
 def main():
     key_words = [
-        'гадание',
-        'приворот',
-        'ведьма'
+
     ]
     for key_word in key_words:
         write_csv(get_a_list_of_groups(key_word))
