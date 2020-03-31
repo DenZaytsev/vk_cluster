@@ -1,14 +1,14 @@
-from .access_token import TOKEN
+from access_token import TOKEN
 import requests
-import regex as re
+from time import sleep
 
 
 def write_csv(list_groups: list) -> None:
+    """Записывает id групп в файл (они могут повторяться)"""
     with open('groups_id.csv', 'a', encoding='utf-8') as file:
         for group in list_groups:
             if not group['is_closed']:
-                clean_name = re.compile('[^a-zA-Zа-яА-Я ]').sub('', group['name'])
-                file.write(f"{group['id']};{clean_name}\n")
+                file.write(f"{group['id']}\n")
 
 
 def get_a_list_of_groups(key_word: str) -> list:
@@ -30,9 +30,37 @@ def get_a_list_of_groups(key_word: str) -> list:
 
 def main():
     key_words = [
-
+        "Путин",
+        "политика",
+        "протест",
+        "революция",
+        "россия",
+        "полика новости",
+        "путин новости",
+        "путин бог",
+        "путин госсовет",
+        "политика новости",
+        "политика россии",
+        "политика сегодня",
+        "политика в россии",
+        'Единая Россия',
+        'КПРФ',
+        'ЛДПР',
+        'Справедливая Россия'
+        'Коммунисты России',
+        'Яблоко',
+        'Российская партия пенсионеров за социальную справедливость',
+        'Родина',
+        'Партия Роста',
+        'Зеленые',
+        'ПАРНАС',
+        'Патриоты России',
+        'Гражданская платформа и Гражданская сила',
+        "навальный митинг",
+        "навальный новости"
     ]
     for key_word in key_words:
+        sleep(1)
         write_csv(get_a_list_of_groups(key_word))
 
 
