@@ -8,16 +8,16 @@ def write_group_info(response):
         try:
             name = response["groups"][0]['name']
             id_group = response["groups"][0]['id']
-            description = response["groups"][0]["description"]
+            group_content = response["groups"][0]["description"]
 
             for post_text in response["items"]:
-                description += post_text['text']
+                group_content += post_text['text']
 
-            clean_description = re.compile('[^a-zA-Zа-яА-Я]').sub('', description)
+            clean_group_content = re.compile('[^a-zA-Zа-яА-Я]').sub('', group_content)
             clean_name = re.compile('[^a-zA-Zа-яА-Я ]').sub('', name)
-            file.write(f"{id_group};{clean_name};{clean_description}\n")
-        except Exception:
-            pass
+            file.write(f"{id_group};{clean_name};{clean_group_content}\n")
+        except Exception as e:
+            print(f"Что-то пошло не так: {e.__class__}")
 
 
 def get_wall(group_id: str):
@@ -33,8 +33,8 @@ def get_wall(group_id: str):
     print(response.status_code, group_id)
     try:
         return response.json()["response"]
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Что-то пошло не так: {e.__class__}")
 
 
 def main() -> None:
