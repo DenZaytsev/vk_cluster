@@ -1,5 +1,4 @@
 access_token.py
-*.csv
 env
 .idea
 __pycache__
