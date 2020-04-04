@@ -25,12 +25,12 @@ def get_wall(group_id: str):
         'access_token': TOKEN,
         'v': 5.103,
         'owner_id': f"-{group_id}",
-        'count': 10,
+        'count': 100,
         'extended': 1,
         'fields': 'description'
     }
     response = requests.get(f'https://api.vk.com/method/wall.get', params)
-    print(response.status_code, group_id)
+    print(group_id, end="\t")
     try:
         return response.json()["response"]
     except Exception as e:
@@ -39,10 +39,15 @@ def get_wall(group_id: str):
 
 def main() -> None:
     """5000 запросов в день """
-    with open("unique_groups_id.csv") as file:
+    counter = 0
+    with open("./data/unique_groups_id.csv") as file:
         for line in file:
             line = line.strip().split(',')
             write_group_info(get_wall(line[1]))
+            counter += 1
+            print(f"{(1/50) * counter} %")
+            if counter >= 5000:
+                break
 
 
 if __name__ == "__main__":

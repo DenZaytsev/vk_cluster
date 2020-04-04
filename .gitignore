@@ -2,3 +2,4 @@ access_token.py
 env
 .idea
 __pycache__
+content.csv
